@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from .forms import SignUpForm, ProfileForm
 from .models import Profile
+from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView
 
 class UserListView(ListView):
     model = User
@@ -36,10 +37,8 @@ class SignUpView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        # Optionally auto-login
         return response
 
-from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView
 
 class CustomLoginView(LoginView):
     template_name = 'accounts/login.html'
