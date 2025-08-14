@@ -27,6 +27,3 @@ A mini Facebook-like social media platform built with Django.
 
 Configure Gmail SMTP in `.env` for email features.
 
-## License
-
-MIT

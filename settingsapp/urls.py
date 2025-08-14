@@ -4,6 +4,6 @@ from .views import SettingsDetailView, SettingsUpdateView
 app_name = 'settingsapp'
 
 urlpatterns = [
-    path('', SettingsDetailView.as_view(), name='settings_detail'),
-    path('edit/', SettingsUpdateView.as_view(), name='settings_edit'),
+    path('<int:pk>/', SettingsDetailView.as_view(), name='settings_detail'),
+    path('<int:pk>/edit/', SettingsUpdateView.as_view(), name='settings_edit'),
 ]

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile - SocialHub{% endblock %}
+
+{% block content %}
+<h2 style="text-align:center; margin-bottom: 1rem;">Edit Your Profile</h2>
+
+<div style="max-width: 500px; margin: auto; background: #f9f9f9; padding: 1.5rem; border-radius: 8px; box-shadow: 0 0 6px rgba(0,0,0,0.1);">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div style="color: red; margin-bottom: 1rem;">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div style="margin-bottom: 1rem;">
+            <label for="{{ form.bio.id_for_label }}" style="display:block; font-weight:bold;">Bio</label>
+            <textarea name="{{ form.bio.html_name }}" id="{{ form.bio.id_for_label }}" rows="4" class="input-field">{{ form.bio.value|default_if_none:'' }}</textarea>
+            {% if form.bio.errors %}
+                <div style="color: red; font-size: 0.9rem;">
+                    {% for error in form.bio.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <label for="{{ form.avatar.id_for_label }}" style="display:block; font-weight:bold;">Avatar</label>
+            {% if user.profile.avatar %}
+                <div style="margin-bottom:0.5rem;">
+                    <img src="{{ user.profile.avatar.url }}" alt="Current Avatar" style="width:60px; height:60px; border-radius:50%; object-fit:cover;">
+                </div>
+            {% endif %}
+            <input type="file" name="{{ form.avatar.html_name }}" id="{{ form.avatar.id_for_label }}" class="input-field" />
+            {% if form.avatar.errors %}
+                <div style="color: red; font-size: 0.9rem;">
+                    {% for error in form.avatar.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <label for="{{ form.location.id_for_label }}" style="display:block; font-weight:bold;">Location</label>
+            <input type="text" name="{{ form.location.html_name }}" id="{{ form.location.id_for_label }}" value="{{ form.location.value|default_if_none:'' }}" class="input-field" />
+            {% if form.location.errors %}
+                <div style="color: red; font-size: 0.9rem;">
+                    {% for error in form.location.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <button type="submit" style="width: 100%; padding: 0.5rem; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Save Changes
+        </button>
+    </form>
+</div>
+
+<style>
+.input-field {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+.input-field:focus {
+    border-color: #007bff;
+    outline: none;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Delete Post - SocialHub{% endblock %}
+
+{% block content %}
+<h2 style="color:#c00; text-align:center; margin-bottom: 1rem;">Confirm Post Deletion</h2>
+
+<div style="max-width: 600px; margin: auto; background: #fff0f0; padding: 1.5rem; border-radius: 8px; border: 1px solid #c00; box-shadow: 0 0 6px rgba(204,0,0,0.2); text-align:center;">
+  <p>Are you sure you want to permanently delete this post? This action cannot be undone.</p>
+
+  <div style="margin: 1rem 0; padding: 1rem; background: #fff; border: 1px solid #ddd; border-radius: 6px; text-align:left;">
+    <p style="margin-bottom:0.5rem;"><strong>Author:</strong> {{ post.author.username }}</p>
+    <p style="margin-bottom:0.5rem;"><strong>Posted on:</strong> {{ post.created_at|date:"F j, Y, g:i a" }}</p>
+    <p style="white-space: pre-line;">{{ post.text|truncatewords:30 }}</p>
+    {% if post.image %}
+      <img src="{{ post.image.url }}" alt="Post image" style="max-width: 100%; height: auto; margin-top: 1rem; border-radius: 4px;">
+    {% endif %}
+  </div>
+
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" style="background: #c00; color: white; padding: 0.5rem 1rem; border:none; border-radius: 5px; cursor: pointer;">
+      Yes, Delete Post
+    </button>
+    <a href="{% url 'posts:post_detail' post.pk %}" style="margin-left: 1rem; color: #007bff; text-decoration: none;">
+      Cancel
+    </a>
+  </form>
+</div>
+{% endblock %}

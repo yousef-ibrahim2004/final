@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}{% if form.instance.pk %}Edit Post{% else %}Create Post{% endif %} - SocialHub{% endblock %}
+
+{% block content %}
+<h2 style="text-align:center; margin-bottom: 1rem;">
+  {% if form.instance.pk %}Edit Post{% else %}Create a New Post{% endif %}
+</h2>
+
+<form method="POST" enctype="multipart/form-data" style="max-width: 600px; margin: auto; background:#f9f9f9; padding: 1.5rem; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1);">
+  {% csrf_token %}
+
+  {% if form.non_field_errors %}
+    <div style="color: red; margin-bottom: 1rem;">
+      {% for error in form.non_field_errors %}
+        <p>{{ error }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Post text -->
+  <div style="margin-bottom: 1rem;">
+    <label for="{{ form.text.id_for_label }}" style="display:block; font-weight:bold;">Post Text</label>
+    <textarea name="{{ form.text.html_name }}" id="{{ form.text.id_for_label }}" rows="6" class="input-field">{{ form.text.value|default_if_none:'' }}</textarea>
+    {% if form.text.errors %}
+      <div style="color: red; font-size: 0.9rem;">
+        {% for error in form.text.errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Post image -->
+  <div style="margin-bottom: 1rem;">
+    <label for="{{ form.image.id_for_label }}" style="display:block; font-weight:bold;">Image (optional)</label>
+    <input type="file" name="{{ form.image.html_name }}" id="{{ form.image.id_for_label }}" class="input-field" />
+    {% if form.image.errors %}
+      <div style="color: red; font-size: 0.9rem;">
+        {% for error in form.image.errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Privacy -->
+  <div style="margin-bottom: 1.5rem;">
+    <label for="{{ form.privacy.id_for_label }}" style="display:block; font-weight:bold;">Privacy</label>
+    {{ form.privacy }}
+    {% if form.privacy.errors %}
+      <div style="color: red; font-size: 0.9rem;">
+        {% for error in form.privacy.errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <button type="submit" style="width: 100%; padding: 0.5rem; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+    {% if form.instance.pk %}Update Post{% else %}Create Post{% endif %}
+  </button>
+</form>
+
+<style>
+.input-field {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+.input-field:focus {
+  border-color: #007bff;
+  outline: none;
+}
+</style>
+{% endblock %}

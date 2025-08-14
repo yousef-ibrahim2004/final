@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Following - {{ profile_user.username }}{% endblock %}
+
+{% block content %}
+<h2 style="text-align:center; margin-bottom: 1rem;">{{ profile_user.username }} is Following</h2>
+
+<div style="max-width:800px; margin:auto;">
+    {% for f in following %}
+        <div style="display:flex; align-items:center; background:#fff; border-radius:8px; padding:1rem; margin-bottom:1rem; box-shadow:0 0 6px rgba(0,0,0,0.1);">
+
+            <!-- Avatar -->
+            <a href="{% url 'accounts:profile_detail' f.following.profile.pk %}">
+                {% if f.following.profile.avatar %}
+                    <img src="{{ f.following.profile.avatar.url }}" alt="{{ f.following.username }}" 
+                         style="width:60px; height:60px; border-radius:50%; object-fit:cover; border:2px solid #007bff; margin-right:1rem;">
+                {% else %}
+                    <img src="{% static 'images/default_avatar.png' %}" alt="Default Avatar" 
+                         style="width:60px; height:60px; border-radius:50%; object-fit:cover; border:2px solid #007bff; margin-right:1rem;">
+                {% endif %}
+            </a>
+
+            <!-- Info -->
+            <div style="flex:1;">
+                <a href="{% url 'accounts:profile_detail' f.following.profile.pk %}" 
+                   style="color:#007bff; font-size:1.1rem; font-weight:bold; text-decoration:none;">
+                    {{ f.following.username }}
+                </a>
+                {% if f.following.profile.bio %}
+                    <p style="margin:0.3rem 0; color:#555; font-size:0.9rem;">{{ f.following.profile.bio|truncatechars:80 }}</p>
+                {% else %}
+                    <p style="margin:0.3rem 0; color:#888; font-size:0.9rem;"><em>No bio provided.</em></p>
+                {% endif %}
+            </div>
+
+            <!-- Unfollow button -->
+            {% if request.user == profile_user %}
+                <form action="{% url 'accounts:follow_toggle' f.following.pk %}" method="post" style="margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" 
+                        style="padding:0.3rem 0.6rem; background:#dc3545; color:white; border:none; border-radius:4px; cursor:pointer; font-size:0.85rem;">
+                        Unfollow
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p style="text-align:center; color:#666;">Not following anyone yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

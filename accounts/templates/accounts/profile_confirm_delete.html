@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Delete Profile - SocialHub{% endblock %}
+
+{% block content %}
+<h2 style="color:#c00; text-align:center; margin-bottom:1rem;">
+    ⚠️ Confirm Delete Profile
+</h2>
+
+<div style="background:#fff3f3; padding:1.5rem; border:1px solid #f5c2c2; border-radius:6px; max-width: 600px; margin: 2rem auto;">
+  <p style="font-size:1.1rem; font-weight:bold; margin-bottom: 1rem;">
+    You are about to <span style="color:#c00;">permanently delete your account</span>.
+  </p>
+  <p style="margin-bottom: 1rem;">
+    This action will remove your account, profile, and settings from SocialHub. It <strong>cannot be undone</strong>.
+  </p>
+  <p style="margin-bottom: 1rem; color:#555;">
+    If you want to keep your account, click <strong>Cancel</strong> or navigate away.
+  </p>
+
+  <form method="POST" style="display:flex; justify-content:space-between; max-width: 400px; margin: auto;">
+    {% csrf_token %}
+    <a href="{% url 'accounts:profile_detail' profile.pk %}" 
+       style="padding: 0.5rem 1rem; background:#ccc; color:#000; border-radius:4px; text-decoration:none; flex: 1; margin-right: 0.5rem; text-align:center;">
+      Cancel
+    </a>
+    <button type="submit" 
+            style="background:#c00; color:#fff; border:none; border-radius:4px; padding: 0.5rem 1rem; cursor:pointer; flex: 1; margin-left: 0.5rem;">
+      Confirm Delete
+    </button>
+  </form>
+</div>
+
+<div style="max-width: 600px; margin: 2rem auto; font-size: 0.9rem; color: #777; line-height: 1.4;">
+  <h3>What happens when you delete your account?</h3>
+  <ul>
+    <li>Your profile information (bio, avatar, location) will be deleted.</li>
+    <li>Your user settings will be deleted from the database.</li>
+    <li>Your actual user account will be removed, freeing up your username and email for reuse.</li>
+    <li>Your posts and comments will remain but be anonymized or shown as “Deleted User”.</li>
+  </ul>
+  <p>
+    You can register again later with the same username and email if you change your mind.
+  </p>
+</div>
+{% endblock %}

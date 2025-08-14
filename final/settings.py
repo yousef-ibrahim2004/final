@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'accounts',
     'posts',
     'settingsapp',
+    'django.contrib.sites',  
 ]
 
 MIDDLEWARE = [
@@ -139,14 +140,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = config('EMAIL_HOST', default='127.0.0.1,localhost')
-EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='youssef.elkot2004@gmail.com')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='yallo2004')
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='final <no-reply@example.com>')
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'youssef.elkot2004@gmail.com'
+EMAIL_HOST_PASSWORD = 'mkmvifwytfohbgle'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-# # Login/Logout URLs
-# LOGIN_URL = 'login'
-# LOGIN_REDIRECT_URL = 'home'
-# LOGOUT_REDIRECT_URL = 'login'
+SITE_ID = 1  
+

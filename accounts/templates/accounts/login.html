@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Login - SocialHub{% endblock %}
+
+{% block content %}
+<h2 style="text-align:center; margin-bottom: 1.5rem;">Welcome Back</h2>
+
+<form method="POST" style="max-width: 400px; margin: auto; background: #f9f9f9; padding: 2rem; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1);">
+  {% csrf_token %}
+
+  {% if form.non_field_errors %}
+  <div style="color: #b00020; margin-bottom: 1rem; font-weight: 600;">
+    {% for error in form.non_field_errors %}
+      <p>{{ error }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div style="margin-bottom: 1.25rem;">
+    <label for="{{ form.username.id_for_label }}" style="display:block; font-weight:bold; margin-bottom:0.3rem;">Username</label>
+    <input type="text" name="{{ form.username.html_name }}" id="{{ form.username.id_for_label }}" 
+           value="{{ form.username.value|default_if_none:'' }}" 
+           autocomplete="username"
+           class="input-field" />
+    {% if form.username.errors %}
+      <div style="color:#b00020; font-size: 0.9rem; margin-top: 0.25rem;">
+        {% for error in form.username.errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div style="margin-bottom: 1rem;">
+    <label for="{{ form.password.id_for_label }}" style="display:block; font-weight:bold; margin-bottom:0.3rem;">Password</label>
+    <input type="password" name="{{ form.password.html_name }}" id="{{ form.password.id_for_label }}" 
+           autocomplete="current-password"
+           class="input-field" />
+    {% if form.password.errors %}
+      <div style="color:#b00020; font-size: 0.9rem; margin-top: 0.25rem;">
+        {% for error in form.password.errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div style="text-align:right; margin-bottom: 1.5rem;">
+    <a href="{% url 'accounts:password_reset' %}" style="font-size:0.9rem;">Forgot password?</a>
+  </div>
+
+  <button type="submit" style="width: 100%; padding: 0.6rem; background: #007bff; color: white; font-weight: bold; border: none; border-radius: 5px; cursor: pointer;">
+    Login
+  </button>
+
+  <p style="text-align:center; margin-top: 1rem;">
+    Don't have an account? <a href="{% url 'accounts:register' %}">Register here</a>.
+  </p>
+</form>
+
+<style>
+.input-field {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+.input-field:focus {
+  border-color: #007bff;
+  outline: none;
+}
+</style>
+{% endblock %}

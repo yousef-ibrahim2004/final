@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Post by {{ post.author.username }} - SocialHub{% endblock %}
+
+{% block content %}
+<article style="max-width: 700px; margin: auto; padding: 1rem; background: #f9f9f9; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1);">
+
+  <!-- Post info -->
+  <p style="color: #666; font-size: 0.9em; margin-bottom: 0.5rem;">
+    By <strong>{{ post.author.username }}</strong> on {{ post.created_at|date:"F j, Y, g:i a" }} • 
+    Privacy: {{ post.get_privacy_display }}
+  </p>
+
+  {% if post.image %}
+    <img src="{{ post.image.url }}" alt="Post image"
+         style="max-width: 100%; height: auto; margin: 1rem 0; border-radius: 6px;">
+  {% endif %}
+
+  <p style="font-size: 1rem; line-height: 1.5;">{{ post.text|linebreaksbr }}</p>
+
+  <!-- Likes section -->
+  <div style="background: #fff; padding: 1rem; border-radius: 6px; margin-top: 1rem; box-shadow: 0 0 6px rgba(0,0,0,0.05);">
+      <form method="post" action="{% url 'posts:post_like' post.pk %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit"
+                  style="background: #007bff; color: white; padding: 0.4rem 1rem; border-radius: 5px; border: none; cursor: pointer;">
+              {% if is_liked %} Unlike {% else %} Like {% endif %}
+          </button>
+      </form>
+
+      <!-- Like count navigates to like user list -->
+      <a href="{% url 'posts:post_likes_list' post.pk %}"
+         style="margin-left: 1rem; font-size: 0.9em; color: #007bff; text-decoration: none;">
+         {{ post.likes.count }} like{{ post.likes.count|pluralize }}
+      </a>
+  </div>
+
+  <!-- Comments section -->
+  <div style="background: #fff; padding: 1rem; border-radius: 6px; margin-top: 1.5rem; box-shadow: 0 0 6px rgba(0,0,0,0.05);">
+      <h3 style="margin-bottom: 1rem; font-size: 1.2em;">Comments ({{ post.comments.count }})</h3>
+
+      {% for comment in post.comments.all %}
+          <div style="border-bottom: 1px solid #eee; padding: 0.5rem 0;">
+              <strong>{{ comment.author.username }}</strong>: {{ comment.text }}
+
+              {% if comment.author == user %}
+                  <a href="{% url 'posts:comment_edit' post.pk comment.pk %}" 
+                     style="margin-left: 0.5em; font-size: 0.85em; color: white; background: #ffc107; padding: 0.2rem 0.5rem; border-radius: 3px; text-decoration: none;">
+                     Edit
+                  </a>
+              {% endif %}
+
+              {% if comment.author == user or post.author == user %}
+                  <a href="{% url 'posts:comment_delete' post.pk comment.pk %}" 
+                     style="margin-left: 0.5em; font-size: 0.85em; color: white; background: #dc3545; padding: 0.2rem 0.5rem; border-radius: 3px; text-decoration: none;">
+                     Delete
+                  </a>
+              {% endif %}
+          </div>
+      {% empty %}
+          <p style="color: #666;">No comments yet.</p>
+      {% endfor %}
+
+      <!-- Add comment form -->
+      <form method="post" action="{% url 'posts:comment_create' post.pk %}" style="margin-top: 1rem;">
+          {% csrf_token %}
+          <input type="text" name="text" placeholder="Write a comment..." required
+                 style="width: 80%; padding: 0.4rem; border-radius: 4px; border: 1px solid #ccc;">
+          <button type="submit" style="background: #28a745; color: white; padding: 0.4rem 1rem; border-radius: 5px; border: none; cursor: pointer;">
+              Add Comment
+          </button>
+      </form>
+  </div>
+
+  <!-- Post edit/delete -->
+  {% if user == post.author %}
+  <div style="margin-top: 2rem;">
+    <a href="{% url 'posts:post_edit' post.pk %}"
+       style="background: #007bff; color: white; padding: 0.4rem 1rem; border-radius: 5px; text-decoration:none;">
+       Edit
+    </a>
+    <a href="{% url 'posts:post_delete' post.pk %}"
+       style="background: #dc3545; color: white; padding: 0.4rem 1rem; border-radius: 5px; margin-left: 1rem; text-decoration:none;">
+       Delete
+    </a>
+  </div>
+  {% endif %}
+
+</article>
+{% endblock %}

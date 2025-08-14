@@ -21,7 +21,7 @@ class SettingsUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = UserSettings
     form_class = SettingsForm
     template_name = 'settingsapp/settings_form.html'
-    success_url = reverse_lazy('settingsapp:settings_detail')
+    # success_url = reverse_lazy('settingsapp:settings_detail')
 
     def get_object(self):
         settings, _ = UserSettings.objects.get_or_create(user=self.request.user)
@@ -29,3 +29,7 @@ class SettingsUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         return self.get_object().user == self.request.user
+    
+    def get_success_url(self):
+        # Redirect back to the settings detail page after saving
+        return reverse_lazy('settingsapp:settings_detail', kwargs={'pk': self.get_object().pk})

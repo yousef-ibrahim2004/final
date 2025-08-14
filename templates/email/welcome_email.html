@@ -3,11 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome to SocialHub</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            background: #ffffff;
+            margin: 40px auto;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        h2 {
+            color: #007bff;
+        }
+        p {
+            line-height: 1.5;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h2>Hi {{ user.username }},</h2>
-    <p>Welcome to <strong>SocialHub</strong>! 🎉</p>
-    <p>We’re excited to have you join our community. Start connecting, sharing, and exploring today.</p>
-    <p>Happy networking,<br>The SocialHub Team</p>
+    <div class="container">
+        <h2>Hi {{ user.username }},</h2>
+        <p>🎉 Welcome to <strong>SocialHub</strong>!</p>
+        <p>We’re excited to have you join our community. Start connecting, sharing, and exploring today.</p>
+        <p>
+            <a href="{{ protocol }}://{{ domain }}/" class="btn">
+                Go to SocialHub
+            </a>
+        </p>
+        <div class="footer">
+            Happy networking,<br>
+            The SocialHub Team
+        </div>
+    </div>
 </body>
 </html>

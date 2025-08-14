@@ -10,5 +10,3 @@ db.sqlite3
 # Virtual environment
 venv/
 
-# Env secrets
-.env

@@ -2,85 +2,191 @@
 <html lang="en">
 {% load static %}
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}SocialHub{% endblock %}</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0; padding: 0;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+        nav {
+            background-color: #007bff;
+            color: white;
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a.brand {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0; padding: 0;
+            display: flex;
+            gap: 1rem;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.4rem 0.6rem;
+        }
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        main.container {
+            max-width: 900px;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+            background-color: white;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            border-radius: 6px;
+            min-height: 70vh;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            font-size: 0.9rem;
+            color: #777;
+            border-top: 1px solid #ddd;
+            margin-top: 3rem;
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-toggle {
+            cursor: pointer;
+            user-select: none;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            background: white;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            min-width: 140px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 100;
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #333;
+            text-decoration: none;
+        }
+        .dropdown-menu a:hover {
+            background-color: #eee;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .avatar {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            object-fit: cover;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+        .alert {
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            position: relative;
+            border: 1px solid transparent;
+        }
+        .alert-info { background-color: #e7f3fe; border-color: #b3d8fd; color: #3178c6; }
+        .alert-success { background-color: #d4edda; border-color: #c3e6cb; color: #2f6627; }
+        .alert-warning { background-color: #fff3cd; border-color: #ffeeba; color: #856404; }
+        .alert-danger { background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+        .alert button.close-btn {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            line-height: 1;
+            cursor: pointer;
+            color: inherit;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">
-                <i class="fas fa-share-alt"></i> SocialHub
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">Home</a>
-                    </li>
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'create_post' %}">Create Post</a>
-                    </li>
-                    {% endif %}
-                </ul>
-                
-                <ul class="navbar-nav">
-                    {% if user.is_authenticated %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                            <img src="{{ user.profile.profile_picture.url }}" alt="Profile" class="rounded-circle me-1" width="25" height="25">
-                            {{ user.username }}
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'profile' %}">My Profile</a></li>
-                            <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Edit Profile</a></li>
-                            <li><a class="dropdown-item" href="{% url 'settings' %}">Settings</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-                        </ul>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Register</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <main class="container mt-4">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            {% endfor %}
+<nav>
+    <a href="{% url 'posts:post_list' %}" class="brand">SocialHub</a>
+
+    <ul>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'posts:post_create' %}">Create Post</a></li>
+        <li><a href="{% url 'accounts:user_list' %}">Profiles</a></li>
+        <form action="{% url 'accounts:profile_search' %}" method="get" style="display:inline;">
+            <input type="text" name="q" placeholder="Search users..." style="padding:0.4em 1em; border-radius:6px; border:1px solid #cfd8ff; font-size:1em;">
+            <button type="submit" class="like-btn">Search</button>
+        </form>
         {% endif %}
+    </ul>
 
-        {% block content %}
-        {% endblock %}
-    </main>
+    <ul>
+    {% if user.is_authenticated and user.profile %}
+    <li class="dropdown">
+        <span class="dropdown-toggle">
+            {% if user.profile.avatar %}
+                <img src="{{ user.profile.avatar.url }}" alt="Avatar" class="avatar" />
+            {% else %}
+                <img src="{% static 'images/default_avatar.png' %}" alt="Default Avatar" class="avatar" />
+            {% endif %}
+            {{ user.username }}
+        </span>
+        <div class="dropdown-menu">
+            <a href="{% url 'accounts:profile_detail' user.profile.pk %}">My Profile</a>
+            <a href="{% url 'accounts:profile_edit' %}">Edit Profile</a>
 
-    <footer class="bg-light text-center py-3 mt-5">
-        <div class="container">
-            <span class="text-muted">&copy; 2024 SocialHub. All rights reserved.</span>
+            {% if user.settings_id %}
+                <a href="{% url 'settingsapp:settings_detail' user.settings.pk %}">Settings</a>
+            {% else %}
+                <a href="{% url 'settingsapp:settings_edit' 0 %}">Create Settings</a>
+            {% endif %}
+
+            <hr style="margin:0.3rem 0; border:none; border-top:1px solid #ccc;">
+            <a href="{% url 'accounts:logout' %}">Logout</a>
         </div>
-    </footer>
+    </li>
+    {% else %}
+    <li><a href="{% url 'accounts:login' %}">Login</a></li>
+    <li><a href="{% url 'accounts:register' %}">Register</a></li>
+    {% endif %}
+    </ul>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'js/main.js' %}"></script>
+</nav>
+
+<main class="container">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+            <button type="button" class="close-btn" onclick="this.parentElement.style.display='none';">&times;</button>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    &copy; {{ now.year }} SocialHub. All rights reserved.
+</footer>
+
 </body>
 </html>

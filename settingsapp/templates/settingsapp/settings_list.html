@@ -1,35 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: #dc3545; color: white; padding: 20px; text-align: center; }
-        .content { padding: 20px; background: #f8f9fa; }
-        .button { 
-            display: inline-block; 
-            padding: 10px 20px; 
-            background: #dc3545; 
-            color: white; 
-            text-decoration: none; 
-            border-radius: 5px; 
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Password Reset Request</h1>
-        </div>
-        <div class="content">
-            <h2>Hello {{ user.username }}!</h2>
-            <p>You requested a password reset for your SocialHub account.</p>
-            <p>Please click the button below to reset your password:</p>
-            <p><a href="http://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}" class="button">Reset Password</a></p>
-            <p>This link will expire in 24 hours for security reasons.</p>
-            <p>If you didn't request this password reset, please ignore this email.</p>
-            <p>Best regards,<br>The SocialHub Team</p>
-        </div>
-    </div>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Settings - SocialHub{% endblock %}
+
+{% block content %}
+<h2 style="text-align:center; margin-bottom: 1rem;">All User Settings</h2>
+
+<div style="max-width: 700px; margin: auto;">
+  {% if settings_list %}
+    <ul style="list-style:none; padding:0;">
+      {% for setting in settings_list %}
+      <li style="margin-bottom: 1rem; padding: 1rem; background: #f9f9f9; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.05);">
+        <p><strong>User:</strong> {{ setting.user.username }}</p>
+        <p><strong>Default Post Privacy:</strong> {{ setting.default_post_privacy }}</p>
+        <p><strong>Email Notifications:</strong> {{ setting.email_notifications|yesno:"Enabled,Disabled" }}</p>
+        <p><strong>Profile Visibility:</strong> {{ setting.profile_visibility }}</p>
+        <a href="{% url 'settingsapp:settings_detail' setting.pk %}" style="color:#007bff;">View</a>
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No settings found.</p>
+  {% endif %}
+</div>
+{% endblock %}

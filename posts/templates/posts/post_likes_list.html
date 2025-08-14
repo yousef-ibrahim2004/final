@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Likes for Post by {{ post.author.username }} - SocialHub{% endblock %}
+
+{% block content %}
+<article style="max-width: 700px; margin: auto; padding: 1rem; background: #f9f9f9; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1);">
+
+    <h2 style="margin-bottom: 1rem;">Liked by</h2>
+
+    {% if likes %}
+        <ul style="list-style: none; padding: 0;">
+            {% for like in likes %}
+                <li style="padding: 0.5rem; margin-bottom: 0.5rem; background: #fff; border-radius: 6px; box-shadow: 0 0 4px rgba(0,0,0,0.05);">
+                    <a href="{% url 'accounts:profile_detail' like.user.profile.pk %}" 
+                       style="color: #007bff; text-decoration: none; font-weight: bold;">
+                        {{ like.user.username }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p style="color: #666;">No likes yet.</p>
+    {% endif %}
+
+    <div style="margin-top: 1rem;">
+        <a href="{% url 'posts:post_detail' post.pk %}" 
+           style="background: #6c757d; color: white; padding: 0.4rem 1rem; border-radius: 5px; text-decoration: none;">
+            ← Back to Post
+        </a>
+    </div>
+
+</article>
+{% endblock %}

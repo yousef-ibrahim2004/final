@@ -1,8 +1,20 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block title %}My Settings - SocialHub{% endblock %}
+
 {% block content %}
-<h2>Your Settings</h2>
-<p><strong>Default Post Privacy:</strong> {{ settings.default_post_privacy }}</p>
-<p><strong>Email Notifications:</strong> {{ settings.email_notifications|yesno:"Enabled,Disabled" }}</p>
-<p><strong>Profile Visibility:</strong> {{ settings.profile_visibility }}</p>
-<a href="{% url 'settingsapp:settings_edit' %}" class="btn btn-primary">Edit Settings</a>
+<h2 style="text-align:center; margin-bottom: 1rem;">Your Settings</h2>
+
+<div style="max-width: 500px; margin: auto; background: #f9f9f9; padding: 1.5rem; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1);">
+    <p><strong>Default Post Privacy:</strong> {{ settings.default_post_privacy }}</p>
+    <p><strong>Email Notifications:</strong> {{ settings.email_notifications|yesno:"Enabled,Disabled" }}</p>
+    <p><strong>Profile Visibility:</strong> {{ settings.profile_visibility }}</p>
+
+    <div style="margin-top: 1.5rem; text-align:center;">
+        <a href="{% url 'settingsapp:settings_edit' settings.pk %}" 
+           style="background: #007bff; color: white; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none;">
+            Edit Settings
+        </a>
+    </div>
+</div>
 {% endblock %}

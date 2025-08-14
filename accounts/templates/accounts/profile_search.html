@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Search Results{% endblock %}
+{% block content %}
+<div class="container">
+    <h2 style="text-align:center; margin-bottom: 1.5rem;">Search Results for "{{ query }}"</h2>
+    {% if results %}
+        <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
+            {% for user in results %}
+                <div class="profile-card" style="width: 320px;">
+                    <a href="{% url 'accounts:profile_detail_u' user.username %}" style="text-decoration: none; color: inherit;">
+                        <div style="display: flex; align-items: center;">
+                            <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}'s avatar"
+                                 style="width:70px; height:70px; border-radius:50%; border:3px solid #4f8cff; margin-right:1.5rem;">
+                            <div>
+                                <h3 style="margin:0;">{{ user.username }}</h3>
+                                <p class="bio" style="margin:0.5em 0 0 0; color:#555;">
+                                    {{ user.profile.bio|default:"No bio yet." }}
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="text-align:center;">No users found.</p>
+    {% endif %}
+</div>
+{% endblock %}

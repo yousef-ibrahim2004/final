@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Profiles - SocialHub{% endblock %}
+
+{% block content %}
+<h2 style="text-align:center; margin-bottom: 1.5rem;">User Profiles</h2>
+
+<div style="max-width: 800px; margin: auto; background: #f9f9f9; padding: 1.5rem; border-radius: 8px; box-shadow: 0 0 6px rgba(0,0,0,0.1);">
+    {% if profiles %}
+        <ul style="list-style:none; padding:0; margin:0;">
+            {% for profile in profiles %}
+                <li style="display:flex; align-items:center; background:white; padding:0.8rem; margin-bottom:0.8rem; border-radius:6px; box-shadow: 0 0 4px rgba(0,0,0,0.05);">
+                    
+                    {# Avatar Section #}
+                    {% if profile.avatar %}
+                        <img src="{{ profile.avatar.url }}" 
+                             alt="{{ profile.user.username }}'s avatar" 
+                             style="width:50px; height:50px; border-radius: 50%; object-fit: cover; margin-right: 1rem;">
+                    {% else %}
+                        <img src="{% static 'images/default_avatar.png' %}" 
+                             alt="Default Avatar" 
+                             style="width:50px; height:50px; border-radius: 50%; object-fit: cover; margin-right: 1rem;">
+                    {% endif %}
+                    
+                    {# User Info Section #}
+                    <div style="flex-grow:1;">
+                        <strong style="font-size:1.05rem;">{{ profile.user.username }}</strong>
+                        {% if profile.location %}
+                            <span style="color:#555; margin-left:0.5rem;">{{ profile.location }}</span>
+                        {% endif %}
+                        
+                        {% if profile.bio %}
+                            <p style="margin:0.3rem 0 0; font-size:0.9rem; color:#444;">
+                                {{ profile.bio|truncatechars:80 }}
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    {# View Profile Button #}
+                    <a href="{% url 'accounts:profile_detail' profile.pk %}" 
+                       style="background:#007bff; color:white; padding:0.3rem 0.7rem; border-radius:4px; 
+                              text-decoration:none; font-size:0.85rem;">
+                        View
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p style="text-align:center; color:#777;">No profiles found.</p>
+    {% endif %}
+</div>
+{% endblock %}

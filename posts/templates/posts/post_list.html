@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Posts - SocialHub{% endblock %}
+
+{% block content %}
+<h2 style="text-align:center; margin-bottom: 1rem;">All Posts</h2>
+
+<div style="max-width: 700px; margin: auto;">
+  {% if posts %}
+    {% for post in posts %}
+      <div style="border-bottom: 1px solid #ccc; padding: 1rem 0;">
+        
+        <p style="margin:0;">
+          <small>
+            By {{ post.author.username }} on {{ post.created_at|date:"F j, Y" }}
+            • Privacy: {{ post.get_privacy_display }}
+          </small>
+        </p>
+
+        {% if post.image %}
+          <img src="{{ post.image.url }}" alt="Post image" style="max-width:100%; height:auto; margin:0.5rem 0; border-radius:6px;">
+        {% endif %}
+
+        <p>{{ post.text|truncatewords:30 }}</p>
+
+        <a href="{% url 'posts:post_detail' post.pk %}" style="color: #007bff; text-decoration:none;">Read more</a>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No posts found.</p>
+  {% endif %}
+</div>
+{% endblock %}

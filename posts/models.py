@@ -16,6 +16,8 @@ class Post(models.Model):
 
     def __str__(self):
         return f"Post({self.author.username} - {self.created_at})"
+    
+    
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
@@ -25,6 +27,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment({self.author.username} on {self.post.id})"
+    class Meta:
+        unique_together = ('post','author')
 
 class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
